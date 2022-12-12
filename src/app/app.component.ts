@@ -10,6 +10,6 @@ export interface Hero {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = "Tour of Heroes"
+  title = "Tour of Heroes 111"
   color: string = ""
 }
