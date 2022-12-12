@@ -15,6 +15,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { HighlightDirective } from './highlight.directive';
 import { RxComponentComponent } from './rx-component/rx-component.component';
 import { TestComponent } from './test/test.component';
+import { Test1Component } from './test1/test1.component'
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { TestComponent } from './test/test.component';
     HighlightDirective,
     RxComponentComponent,
     TestComponent,
+    Test1Component,
   ],
   imports: [
     BrowserModule,
