@@ -1,0 +1,78 @@
+ 1.概述
+     RxJS是一个库，通过使用observable序列来编写异步和基于事件的程序；
+       提供了一个核心类型Observable，附属类型（Observer，Schedulers，Subjects）
+         和受[Array#extras]启发的操作符（map,filter,reduce,every）,这些数组操作符可以把异步事件作为集合来处理
+       可以把RxJS当作用来处理事件的lodash
+       ReactiveX结合了观察者模式，迭代器模式和使用集合的函数式编程
+     RxJS解决异步事件管理的基本概念：
+         Observable（可观查的对象）：一个可调用的未来值或事件的集合
+         Observer（观察者）：一个回调函数的集合，他知道如何监听由Observable提供的值
+         Subscription（订阅）：表示Observable的执行，主要用于取消Observable的执行
+         Operators（操作符）：采用函数式编程风格的纯函数，使用像map，filter，concat，flatMap等操作符来处理集合
+         Subject（主体）：相当于EventEmitter，并且将值或事件多路推送给Observer的唯一方式
+         Schedulers（调度器）：用来控制并发并且时中央集权的调度员，允许我们发生计时协调，例如setTimeout
+ 2.Observables
+     惰性运算，只有在每个观察者订阅后才会执行
+     1.创建一个Observable
+        let observable = new Observable(function(observer){})
+        Observable.create(function(observer){})
+     2.执行Observables;subscribe执行传递三种类型的值
+        observable.subscribe({
+           Next:发送一个值，比如数字，字符串，对象，等等
+           Error:发送一个JavaScript错误或异常
+           Complete：不在发送任何值
+        })
+    3.执行，会发送零个到多个next通知
+        如果发送error和complete同通知，不会再发送任何通知了
+    4.清理执行
+        Observable 执行可能会是无限的，并且观察者通常希望能在有限的时间内中止执行，所以我们需要一个 API 来取消执行
+         subscription.unsubscribe()
+3.Subject
+    特殊的Observable，允许将值多播给多个观察者，所以Subject是多播的
+    每个Subject都是Observable
+    每个Subject都是观察者，Subject是一个有如下方法的对象：next(v),error(e),complete()
+    要给 Subject 提供新值，只要调用 next(theValue)，它会将值多播给已注册监听该 Subject 的观察者们
+4.BehaviorSubject
+    有一个当前值的概念，他保存发送给消费者的最新值；并且有新的观察者订阅时，会立即从BehaviorSubject 接收到当前值
+    let subject = new BehaviorSubject(0);// 0是初始值
+5. ReplaySubject
+    类似于 BehaviorSubject，它可以发送旧值给新的订阅者，但它还可以记录 Observable 执行的一部分
+    let subject = new ReplaySubject(3)//为新的订阅者缓冲3个值
+     let subject = new ReplaySubject(10, 500);
+    //10:缓冲10个值，500毫秒之前的值可以记录
+6.Operators(操作符)
+    1.概述
+      操作符是Observable类型上的方法，当操作符被调用时，他们不会改变已经存在的Observable实力，会返回一个新的Observable
+      本质上是一个纯函数，接受一个Observable作为输入，并生成一个新的Observable作为输出
+      1.实例操作符
+        Observable 实例上的方法;实例运算符是使用 this 关键字来指代输入的 Observable 的函数
+      2.静态操作符
+        直接附加到 Observable 类上的;静态操作符在内部不使用 this 关键字，而是完全依赖于它的参数
+        new Observable.interval(100)
+    2.操作符
+      1.interval
+          interval 返回一个发出无限自增的序列整数, 你可以选择固定的时间间隔进行发送
+      2.from
+          从一个数组、类数组对象、Promise、迭代器对象或者类 Observable 对象创建一个 Observable.
+        fromEvent(document,"click"):创建一个Observable，该Observable发出来自给定事件对象的指定类型事件
+        of():发出你提供的参数，然后完成
+      3.map,filter,take,takeUntil
+          map:将投射函数应用于每个值 并且在输出 Observable 中发出投射后的结果
+          filter(predicate:function):通过只发送源 Observable 的中满足指定 predicate 函数的项来进行过滤。
+          take(n):只发出源 Observable 最初发出的的N个值 (N = count)。
+          takeUntil(notifier: Observable):发出源 Observable 发出的值，直到 notifier Observable 发出值
+      4.switchMap,mergeMap,concatMap
+          switchMap(projectFunction,resultSelector):将每个值映射成 Observable ，然后使用 switch 打平所有的内部 Observables
+          mergeMap(projectFunction,resultSelector,concurrent:number):
+                将每个源值投射成 Observable ，该 Observable 会合并到输出 Observable 中
+         concatMap():将每个值映射为 Observable, 然后使用concatAll将所有的 内部 Observables 打平
+      5.merge,zip,combineLatest
+          merge():创建一个输出Observable，它可以同时发出每个给定的输入Observable中的所有值
+          zip():将多个 Observable 组合以创建一个 Observable，该 Observable 的值是由所有输入 Observables 的值按顺序计算而来的
+          combineLatest():组合多个 Observables 来创建一个 Observable ，该 Observable 的值根据每个输入 Observable 的最新值计算得出的
+          scan():对源 Observable 使用累加器函数， 返回生成的中间值， 可选的初始值
+
+
+
+
+

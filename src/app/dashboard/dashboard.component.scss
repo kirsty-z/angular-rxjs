@@ -1,0 +1,32 @@
+ h3{
+  text-align:center;
+  font-size: 1.2em;
+  color: #888;
+  margin-bottom: 0;
+  font-weight:700;
+  margin-bottom:20px;
+ }
+ .grid{
+  width:400px;
+ }
+ a {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    margin-left: 10px;
+    background: #607d8b;
+    color: #fff;
+    text-decoration: none;
+}
+  a:link {
+  color: #8fb4c7;
+}
+ a:hover {
+  color: #039be5;
+  background-color: #446472;
+}
+a.active {
+  color: #039be5;
+}

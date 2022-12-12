@@ -1,0 +1,21 @@
+.rxjs{
+  margin-top:30px;
+  border:1px solid rgb(216, 211, 211);
+  padding:30px;
+  .item{
+    margin-bottom:20px;
+  }
+  button{
+    padding: 0 10px;
+    text-decoration: none;
+    background-color: #607D8B;
+    border-radius: 4px;
+    margin-right: 5px;
+    color: #fff;
+    border:none;
+    cursor:pointer;
+    font-size: 16px;
+    height: 30px;
+    line-height: 30px;
+  }
+}

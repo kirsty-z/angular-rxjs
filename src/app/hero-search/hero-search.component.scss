@@ -1,0 +1,42 @@
+.search{
+  margin-top:20px;
+  border:1px solid #ccc;
+  width:400px;
+  text-align:center;
+  input{
+    height:30px;
+    width:calc(300px - 1em);
+    padding:5px ;
+    border-color: #607D8B;
+    &:focus{
+      border:1px solid #039be5;
+      outline:none;
+    }
+  }
+  .title{
+    display: block;
+    font-size:18px;
+    padding:10px 0;
+  }
+  .search-result{
+    width:300px;
+    margin:0 auto;
+    padding-left:0;
+    padding-bottom:20px;
+    .item{
+      list-style-type: none;
+      border:1px solid #999;
+      border-bottom:none;
+      height:40px;
+      &:last-child{
+        border-bottom:1px solid #999;
+      }
+      .link{
+        line-height:40px;
+        color:#607D8B;
+        display:block;
+        text-decoration-line:none;
+      }
+    }
+  }
+}

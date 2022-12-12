@@ -1,0 +1,7 @@
+<div *ngIf="hero" class="hero">
+  <h2 class="name">
+    {{hero.name | uppercase}} is my hero
+  </h2>
+  <button type="button" class="btn" (click)="goBack()">back</button>
+  <button type="button" class="btn" (click)="save()">save</button>
+</div>

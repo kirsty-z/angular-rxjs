@@ -1,0 +1,22 @@
+.hero{
+  width:400px;
+  border:1px solid rgb(218, 215, 215);
+  text-align:center;
+  padding:20px 0 ;
+  margin:20px 0;
+  .name{
+    color:#999;
+  }
+  .btn{
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #607D8B;
+    border-radius: 4px;
+    margin-right: 5px;
+    color: #fff;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+  }
+}
