@@ -13,7 +13,8 @@ import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api"
 import { InMemoryDataService } from "./in-memory-data.service";
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { HighlightDirective } from './highlight.directive';
-import { RxComponentComponent } from './rx-component/rx-component.component'
+import { RxComponentComponent } from './rx-component/rx-component.component';
+import { TestComponent } from './test/test.component'
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RxComponentComponent } from './rx-component/rx-component.component'
     HeroSearchComponent,
     HighlightDirective,
     RxComponentComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
