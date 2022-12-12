@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BehaviorSubject, from, fromEvent, map, Observable, ReplaySubject, scan, Subject,
   throttleTime, interval, merge, take, takeUntil, switchMap, of, mergeMap, concatMap,
-  zip, combineLatest, filter
+  zip, combineLatest, filter, delay, concat
 } from 'rxjs';
 
 @Component({
@@ -92,10 +92,10 @@ export class RxComponentComponent implements OnInit, OnDestroy {
   subject() {
     let subject = new Subject()
     subject.subscribe({
-      next: v => console.log("observerA:" + v)
+      next: v => console.log("subject-observerA:" + v)
     })
     subject.subscribe({
-      next: v => console.log("observerB:" + v)
+      next: v => console.log("subject-observerB:" + v)
     })
     let observable = from([1, 2, 3])
     observable.subscribe(subject)
@@ -129,7 +129,7 @@ export class RxComponentComponent implements OnInit, OnDestroy {
   replaySubjectWindowTime() {
     let i = 1;
     let subject = new ReplaySubject(10, 500);
-    //100缓冲100个值，500毫秒之前的值可以记录
+    //10缓冲10个值，500毫秒之前的值可以记录
     subject.subscribe({
       next: v => console.log("replay-subject-window-time-before500-A: " + v)
     })
@@ -192,7 +192,7 @@ export class RxComponentComponent implements OnInit, OnDestroy {
       let result = intervalResult.pipe(takeUntil(clicks))
       result.subscribe(x => console.log("operator-takeUntil: " + x))
     }
-    // 点击开始从0开始interval，再次点击，从0开始interval；点击其他地方不会停止
+    // 点击开始从0开始interval，再次点击，从0开始interval
     let switchMapOperator = () => {
       let clicks = fromEvent(document, "click")
       let result = clicks.pipe(switchMap(e => interval(1000)))
@@ -216,7 +216,7 @@ export class RxComponentComponent implements OnInit, OnDestroy {
       // a1 b1 c1
       // a2 b2 c3
     }
-    //点击，从0开始interval输出，再次点击，从0开始interval,点击其他地方停止
+    //点击，从0开始interval输出，再次点击，从0开始interval
     let concatMapOperator = () => {
       let clicks = fromEvent(document, 'click');
       let result = clicks.pipe(concatMap(ev => interval(1000).pipe(take(4))))
