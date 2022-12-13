@@ -2,8 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BehaviorSubject, from, fromEvent, map, Observable, ReplaySubject, scan, Subject,
   throttleTime, interval, merge, take, takeUntil, switchMap, of, mergeMap, concatMap,
-  zip, combineLatest, filter, delay, concat
+  zip, filter, delay, concat
 } from 'rxjs';
+
+import { combineLatest, combineLatestWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rx-component',
@@ -115,14 +117,16 @@ export class RxComponentComponent implements OnInit, OnDestroy {
   replaySubject() {
     let subject = new ReplaySubject(3)//为新的订阅者缓冲3个值
     subject.subscribe({
-      next: v => console.log("replay-subjectA: " + v)
+      next: v => console.log("replay-subjectA: " + v),
+      error: e => console.log("error: " + e)
     })
     subject.next(1)
     subject.next(2)
     subject.next(3)
     subject.next(4)
     subject.subscribe({
-      next: v => console.log("replay-subjectB: " + v)
+      next: v => console.log("replay-subjectB: " + v),
+      error: e => console.log("error: " + e)
     })
     subject.next(5)
   }
@@ -131,7 +135,8 @@ export class RxComponentComponent implements OnInit, OnDestroy {
     let subject = new ReplaySubject(10, 500);
     //10缓冲10个值，500毫秒之前的值可以记录
     subject.subscribe({
-      next: v => console.log("replay-subject-window-time-before500-A: " + v)
+      next: v => console.log("replay-subject-window-time-before500-A: " + v),
+      error: e => console.log("error: " + e)
     })
     let timer = setInterval(() => {
       if (i < 10) { subject.next(i++) } else {
@@ -140,7 +145,8 @@ export class RxComponentComponent implements OnInit, OnDestroy {
     }, 200)
     setTimeout(() => {
       subject.subscribe({
-        next: v => console.log("replay-subject-window-time-before500-B: " + v)
+        next: v => console.log("replay-subject-window-time-before500-B: " + v),
+        error: e => console.log("error: " + e)
       })
     }, 1000)
   }
@@ -160,13 +166,19 @@ export class RxComponentComponent implements OnInit, OnDestroy {
       let observable1 = interval(1000)
       let observable2 = interval(300)
       let merged = merge(observable1, observable2)
-      merged.subscribe(v => console.log("interval-operator: " + v))
+      merged.subscribe({
+        next: v => console.log("interval-operator: " + v),
+        error: e => console.log("error: " + e)
+      })
     }
     // 生成observable
     let fromOperator = () => {
       let array = [10, 20, 30];
       let result = from(array)
-      result.subscribe(v => console.log("from-operator: " + v));
+      result.subscribe({
+        next: v => console.log("from-operator: " + v),
+        error: e => console.log("error: " + e)
+      });
 
       function* double(seed: number) {
         var i = seed;
@@ -177,33 +189,46 @@ export class RxComponentComponent implements OnInit, OnDestroy {
       }
       let iterator = double(3)
       let results = from(iterator).pipe(take(10))
-      results.subscribe(v => console.log("from-operator-iterator: " + v))
+      results.subscribe({ next: v => console.log("from-operator-iterator: " + v), error: e => console.error(e) })
     }
     // 筛选
     let filterOperator = () => {
       let data = of(1, 2, 3, 4, 5)
-      let results = data.pipe(filter((e: any) => e >= 3))
-      results.subscribe(x => console.log("filter-operator: " + x))
+      let results = data.pipe(filter((e) => e >= 3))
+      results.subscribe({
+        next: x => console.log("filter-operator: " + x),
+        error: e => console.log("error: " + e)
+      })
     }
     // 直到点击，不再执行interval
     let takeUntilOperator = () => {
       let intervalResult = interval(1000);
       let clicks = fromEvent(document, "click")
       let result = intervalResult.pipe(takeUntil(clicks))
-      result.subscribe(x => console.log("operator-takeUntil: " + x))
+      const sub = result.subscribe({
+        next: x => console.log("operator-takeUntil: " + x),
+        error: e => console.log("error: " + e)
+      });
+      sub.unsubscribe();
     }
     // 点击开始从0开始interval，再次点击，从0开始interval
     let switchMapOperator = () => {
       let clicks = fromEvent(document, "click")
       let result = clicks.pipe(switchMap(e => interval(1000)))
-      result.subscribe(v => console.log("switchMap-operator: " + v))
+      result.subscribe({
+        next: v => console.log("switchMap-operator: " + v),
+        error: e => console.log("error: " + e)
+      })
     }
     //interval和点击事件可同时进行
     let mergeOperator = () => {
       let clicks = fromEvent(document, "click");
       let timer = interval(1000);
       let clicksOrTimer = merge(clicks, timer);
-      clicksOrTimer.subscribe(x => console.log("merge-operator: " + x))
+      clicksOrTimer.subscribe({
+        next: x => console.log("merge-operator: " + x),
+        error: e => console.log("error: " + e)
+      })
     }
     //每个字符映射并打平输出
     let mergeMapOperator = () => {
@@ -212,7 +237,10 @@ export class RxComponentComponent implements OnInit, OnDestroy {
         interval(1000)
           .pipe(map(i => x + i))
       ))
-      result.subscribe(x => console.log("mergeMap-operator: " + x))
+      result.subscribe({
+        next: x => console.log("mergeMap-operator: " + x),
+        error: e => console.log("error: " + e)
+      })
       // a1 b1 c1
       // a2 b2 c3
     }
@@ -220,7 +248,10 @@ export class RxComponentComponent implements OnInit, OnDestroy {
     let concatMapOperator = () => {
       let clicks = fromEvent(document, 'click');
       let result = clicks.pipe(concatMap(ev => interval(1000).pipe(take(4))))
-      result.subscribe(x => console.log("concatMap-operator: " + x))
+      result.subscribe({
+        next: x => console.log("concatMap-operator: " + x),
+        error: e => console.log("error: " + e)
+      })
     }
     // 将多个observable发出的相同index位置的值组合在一起
     let zipOperator = () => {
@@ -228,14 +259,33 @@ export class RxComponentComponent implements OnInit, OnDestroy {
       let name$ = of("foo", "bar", "beer");
       let isDev$ = of(true, true, false);
       zip(age$, name$, isDev$, (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
-        .subscribe(x => console.log(x))
+        .subscribe({
+          next: x => console.log(x),
+          error: e => console.log("error: " + e)
+        })
     }
     // 组合多个observable创建一个observable，他的值根据每个输入observable最新值计算出来，输出最后一组值
     let combineLatestOperator = () => {
       let weight = of(70, 72, 76, 79, 75);
       let height = of(1.75, 1.77, 1.78);
       // let bmi = weight.pipe(combineLatest(height, (w, h) => w / (h * h)))
-      // bmi.subscribe(x => console.log("combineLatest-operator: " + x))
+      // bmi.subscribe({next:x => console.log("combineLatest-operator: " + x),
+      //   error:e=>console.log("error: "+e)
+      // })
+    }
+    let combineLatestWithOperator = () => {
+      const a = new Subject<number>();
+      const b = new Subject<string>();
+      const merge$ = a.asObservable().pipe(combineLatestWith(b.asObservable()));
+      merge$.subscribe({ next: x => console.log('merge', x), error: e => console.error(e) });
+      b.next('a');
+      a.next(0);
+      b.next('b');
+      b.next('c');
+      a.next(1);
+      b.next('d');
+      b.next('e');
+      a.next(2);
     }
   }
   // map使用给定的project来处理每一个observable发出的值，交给下游
@@ -244,7 +294,10 @@ export class RxComponentComponent implements OnInit, OnDestroy {
     if (!button) return;
     let clicks = fromEvent(button, "click")
     let positions = clicks.pipe(map((ev: any) => ev.clientX))
-    positions.subscribe(x => console.log("map-operator-mouse-positionX: " + x))
+    positions.subscribe({
+      next: x => console.log("map-operator-mouse-positionX: " + x),
+      error: e => console.log(e)
+    })
   }
 
 }
