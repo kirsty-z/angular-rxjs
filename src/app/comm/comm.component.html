@@ -1,0 +1,7 @@
+<div class="title">service通信</div>
+<div>{{comm}}</div>
+<div>父组件：</div>
+<button (click)="onChangeMsg()">change msg</button>
+<div>{{parent.msg}}</div>
+<div>{{subMsg}}</div>
+<app-sub-comm [parent]="parent" (sendMsg)="handleData($event)"></app-sub-comm>

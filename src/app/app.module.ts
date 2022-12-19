@@ -14,6 +14,8 @@ import { InMemoryDataService } from "./in-memory-data.service";
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { HighlightDirective } from './highlight.directive';
 import { RxComponentComponent } from './rx-component/rx-component.component';
+import { CommComponent } from './comm/comm.component';
+import { SubCommComponent } from './sub-comm/sub-comm.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { RxComponentComponent } from './rx-component/rx-component.component';
     HeroSearchComponent,
     HighlightDirective,
     RxComponentComponent,
+    CommComponent,
+    SubCommComponent,
   ],
   imports: [
     BrowserModule,

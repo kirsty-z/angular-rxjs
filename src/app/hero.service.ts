@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Hero } from './app.component';
 import { catchError, Observable, of, tap } from 'rxjs';
+import { COMM } from './mock-heroes';
 
 
 // @Injectable()装饰器，记下本服务的元数据，
@@ -17,9 +18,9 @@ export class HeroService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  // getHeroes(): Promise<Hero[]> {
-  // return Promise.resolve(HEROES);
-  // }
+  getComm(): Promise<string> {
+    return Promise.resolve(COMM);
+  }
   // http
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
