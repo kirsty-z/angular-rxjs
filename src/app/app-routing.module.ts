@@ -6,12 +6,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { HeroesComponent } from './heroes/heroes.component';
 import { RxComponentComponent } from './rx-component/rx-component.component';
+import { FormComponent } from './form/form.component';
 const routes: Routes = [
   { path: "heroes", component: HeroesComponent },
   { path: "dashboard", component: DashboardComponent },
   { path: "detail/:id", component: HeroDetailComponent },
   { path: "rxjs", component: RxComponentComponent },
   { path: "comm", component: CommComponent },
+  { path: "form", component: FormComponent },
   { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
 

@@ -1,0 +1,14 @@
+<p>form works!</p>
+<form #heroForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="item">
+    <label for="name">name:</label>
+    <input type="text" #name required id="name" [(ngModel)]="name" />
+  </div>
+  <div class="item">
+    <label for="power">poser:</label>
+    <select #power required id="power" [(ngModel)]="selectPower">
+      <option *ngFor="let state of powers" [value]="state">{{state}}</option>
+    </select>
+  </div>
+  <button type="submit" [disabled]="!heroForm.form.valid">submit</button>
+</form>

@@ -16,6 +16,7 @@ import { HighlightDirective } from './highlight.directive';
 import { RxComponentComponent } from './rx-component/rx-component.component';
 import { CommComponent } from './comm/comm.component';
 import { SubCommComponent } from './sub-comm/sub-comm.component';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SubCommComponent } from './sub-comm/sub-comm.component';
     RxComponentComponent,
     CommComponent,
     SubCommComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,

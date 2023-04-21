@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Comm } from '../comm';
 import { HeroService } from '../hero.service';
 
@@ -9,7 +9,8 @@ import { HeroService } from '../hero.service';
 })
 export class CommComponent implements OnInit {
   constructor(
-    private heroService: HeroService
+    private heroService: HeroService,
+    private cd: ChangeDetectorRef
   ) { }
   comm: string = ""
   parent: Comm = {
@@ -18,7 +19,7 @@ export class CommComponent implements OnInit {
   }
   subMsg: string = ""
   ngOnInit() {
-    this.heroService.getComm().then(comm => this.comm = comm)
+    this.heroService.getComm().then(comm => this.comm = comm);
   }
   onChangeMsg() {
     this.parent = {
@@ -26,9 +27,16 @@ export class CommComponent implements OnInit {
       msg: "改变了父组件的数据传递到子组件中"
     }
   }
+  // 子组件的ngOnInit在父组件的DOM更新之前被调用，出现ExpressionChangedAfterItHasBeenCheckedError
+  // 两个解决方案：
+  // 1.强制变化检测
+  ngAfterViewInit() {
+    this.cd.detectChanges()
+  }
   handleData($event: string) {
-    if ($event) {
-      this.subMsg = $event
-    }
+    // 2.异步更新
+    // setTimeout(() => {
+    this.subMsg = $event
+    // }, 0)
   }
 }

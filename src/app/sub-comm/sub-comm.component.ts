@@ -28,6 +28,7 @@ export class SubCommComponent implements OnInit, OnChanges {
     //后续父组件更改，子组件不会改变，两个解决方案：1.setter  2.ngOnChange
     this.id = this.parent.id;
     this.msg = this.parent.msg
+    this.sendMsg.next("我是子组件数据")
   }
   // 2.ngOnChange
   ngOnChanges(changes: SimpleChanges): void {
@@ -35,7 +36,6 @@ export class SubCommComponent implements OnInit, OnChanges {
     if (!parent.firstChange) {
       this.id = parent.currentValue.id
       this.msg = parent.currentValue.msg
-      this.sendMsg.next("我是子组件数据")
     }
   }
 }
